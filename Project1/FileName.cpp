@@ -43,7 +43,7 @@ int main()
     cout << "                                       |---------------------------------------------------|"<<endl<<endl;
     cout << "                                                               ......." << endl;
     setCursorPosition(66, 12);
-    scanf("%d", &wybor1);
+    scanf("%d ", &wybor1);
     if (wybor1 == 2)
     {
         gracz1 = new real();
