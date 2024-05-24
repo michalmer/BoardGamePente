@@ -111,14 +111,14 @@ void drawBoard(char board[19][19])
         cout << "\n";
     }
     SetConsoleTextAttribute(hOut, BACKGROUND_RED | BACKGROUND_INTENSITY);
-    cout << " ";
+    cout << "  ";
     for (int i = 0; i < 19; ++i)
     {
         char znak = 65 + i;
         cout << "   ";
         cout << znak << "  ";
     }
-    cout << "      ";
+    cout << "     ";
     cout << "\n";
 
 
@@ -127,6 +127,7 @@ void drawBoard(char board[19][19])
     {
         cout << "=";
     }
+    printf("  ");
     SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
     cout << "\n\n";
 }

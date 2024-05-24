@@ -18,17 +18,25 @@ public:
     void ustawnick(const char* nazwa);
     gracz();
     void sprawdzCzyBicie(char board[19][19]);
+    int pokazbicia();
+    int sprawdzczywygrana(char board[19][19]);
+    void zapiszwynik();
+    void dodajwygrana();
+    int pokazwygrana();
+    void ustawwygrane(int wygrane);
 };
 
 class real : public gracz 
 {
 public:
+    real();
     void wykonajRuch(char board[19][19]);
 };
 
 class komputer : public gracz 
 {
 public:
+    komputer();
     void wykonajRuch(char board[19][19]);
 };
 
