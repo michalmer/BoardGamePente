@@ -24,6 +24,7 @@ public:
     void dodajwygrana();
     int pokazwygrana();
     void ustawwygrane(int wygrane);
+    void ustawbicia(int bicia);
 };
 
 class real : public gracz 

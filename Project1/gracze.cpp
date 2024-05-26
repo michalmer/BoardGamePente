@@ -13,6 +13,10 @@ int gracz::pokazbicia()
 {
     return ile_bic;
 }
+void gracz :: ustawbicia(int bicia)
+{
+    ile_bic = bicia;
+}
 gracz::gracz() : ilosc_wygranych(0), ile_bic(0), stan_wygranej(0),nick("default"),znak('X') {}
 
 void gracz::wygrana() {

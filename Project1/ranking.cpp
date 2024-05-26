@@ -8,6 +8,22 @@
 
 using namespace std;
 
+void Sort(real players[], int num_players) {
+    for (int i = 1; i < num_players; ++i) 
+    {
+        real temp = players[i];
+        int j = i - 1;
+
+        while (j >= 0 && players[j].pokazwygrana() < temp.pokazwygrana()) {
+            players[j + 1] = players[j];
+            j = j - 1;
+        }
+        players[j + 1] = temp;
+    }
+}
+
+
+
 void update_score(real players[], int& num_players, const char* name)
 {
     int found = 0;
@@ -25,6 +41,15 @@ void update_score(real players[], int& num_players, const char* name)
         players[num_players].ustawwygrane(1);
         num_players++;
     }
+    int max = INT_MAX;
+    for (int i = 0; i < num_players; i++)
+    {
+        if (players[i].pokazwygrana() > max)
+        {
+
+        }
+    }
+    Sort(players, num_players);
 }
 
 void save_scoreboard(real players[], int num_players) {
@@ -38,3 +63,4 @@ void save_scoreboard(real players[], int num_players) {
     }
     file.close();
 }
+
