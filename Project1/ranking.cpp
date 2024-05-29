@@ -7,7 +7,7 @@
 #include <string>
 
 using namespace std;
-
+//funkcja sortuje tablice wynikow malejaco
 void Sort(real players[], int num_players) {
     for (int i = 1; i < num_players; ++i) 
     {
@@ -23,7 +23,7 @@ void Sort(real players[], int num_players) {
 }
 
 
-
+//funkcja aktualizuje tabele wynikow poprzez dodanie nowych graczy lub zmiane wyniku istniejacym
 void update_score(real players[], int& num_players, const char* name)
 {
     int found = 0;
@@ -51,7 +51,7 @@ void update_score(real players[], int& num_players, const char* name)
     }
     Sort(players, num_players);
 }
-
+//funkcja zapisuje tabele wynikow do pliku tekstowego
 void save_scoreboard(real players[], int num_players) {
     ofstream file("ranking.txt");
     if (!file.is_open()) {

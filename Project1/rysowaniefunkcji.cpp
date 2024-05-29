@@ -61,8 +61,8 @@ void drawBoard(char board[19][19])
         {
             if (j == 19 - 1)
             {
-                cout << board[i][j] << flush;
                 cout << " ";
+                cout << board[i][j] << flush;
                 cout << "  |";
                 continue;
             }
@@ -111,14 +111,14 @@ void drawBoard(char board[19][19])
         cout << "\n";
     }
     SetConsoleTextAttribute(hOut, BACKGROUND_RED | BACKGROUND_INTENSITY);
-    cout << "  ";
+    cout << "   ";
     for (int i = 0; i < 19; ++i)
     {
         char znak = 65 + i;
         cout << "   ";
         cout << znak << "  ";
     }
-    cout << "     ";
+    cout << "    ";
     cout << "\n";
 
 

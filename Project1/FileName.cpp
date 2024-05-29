@@ -37,6 +37,7 @@ int main()
     int wybor1;
     char wybor2;
     char wybor3;
+    char wybor4;
     int wiersz;
     char kolumna;
     int bicia1 = 0;
@@ -132,7 +133,6 @@ int main()
                     system("cls");
                     drawBoard(board);
                     printf("\n%s: ", gracz1->nick);
-                    gracz1->ustawbicia(0);
                     for (int i = 0; i < bicia1; i++)
                     {
                         printf("%c ", 219);
@@ -144,6 +144,7 @@ int main()
                         printf("%c ", 219);
                     }
                     printf("\n");
+                    printf("RUCH GRACZA: %s\n", gracz1->nick);
                     gracz1->wykonajRuch(board);
                     if (gracz1->sprawdzczywygrana(board) == 1)
                     {
@@ -187,7 +188,7 @@ int main()
                         printf("%c ", 219);
                     }
                     printf("\n");
-                    //dodac ktory gracz ma wykonac
+                    printf("RUCH GRACZA: %s\n", gracz2->nick);
                     gracz2->wykonajRuch(board);
                     if (gracz2->sprawdzczywygrana(board) == 1)
                     {
@@ -234,8 +235,22 @@ int main()
         }
         else if (wybor1 == 1)
         {
+            cout << "                                       |---------------------------------------------------|" << endl;
+            printf("                                       |Podaj poziom trudnosci HARD (H) lub EASY(E)        |\n");
+            cout << "                                       |---------------------------------------------------|" << endl << endl;
+
+            cout << "                                                               ......." << endl;
+            setCursorPosition(66, 17);
+            scanf(" %c", &wybor4);
+            if (wybor4 == 'H')
+            {
+                gracz2 = new komputerHARD();
+            }
+            else
+            {
+                gracz2 = new komputerEASY();
+            }
             gracz1 = new real();
-            gracz2 = new komputer();
             gracz1->ustawbicia(0);
             gracz2->ustawbicia(0);
             bicia1 = 0;
@@ -248,7 +263,7 @@ int main()
             cout << "                                       |---------------------------------------------------|" << endl << endl;
 
             cout << "                                                               ......." << endl;
-            setCursorPosition(63, 17);
+            setCursorPosition(63, 22);
             scanf("%s", nick1);
             gracz1->ustawnick(nick1);
            
@@ -256,7 +271,7 @@ int main()
             printf("                                       |Podaj jakiego znaku chcesz uzywac:                 |\n");
             cout << "                                       |---------------------------------------------------|" << endl << endl;
             cout << "                                                               ......." << endl;
-            setCursorPosition(66, 22);
+            setCursorPosition(66, 27);
             scanf(" %c", &znak);
             gracz1->ustawznak(znak);
 
@@ -264,7 +279,7 @@ int main()
             printf("                                       |Podaj jakiego znaku ma uzywac komputer:            |\n");
             cout << "                                       |---------------------------------------------------|" << endl << endl;
             cout << "                                                               ......." << endl;
-            setCursorPosition(66, 27);
+            setCursorPosition(66, 32);
             scanf(" %c", &znak);
             gracz2->ustawznak(znak);
            
@@ -272,7 +287,7 @@ int main()
             printf("                              |Jesli chcesz rozpoczac gre wpisz (T) jesli chcesz zakonczyc gre wpisz(K) |\n");
             cout << "                              |-------------------------------------------------------------------------|" << endl << endl;
             cout << "                                                               ......." << endl;
-            setCursorPosition(66, 32);
+            setCursorPosition(66, 37);
             scanf(" %c", &wybor2);
             system("cls");
             if (wybor2 == 'T')
@@ -329,8 +344,7 @@ int main()
                     gracz2->wykonajRuch(board);
                     if (gracz2->sprawdzczywygrana(board) == 1)
                     {
-                        gracz2->wygrana();
-                        //DODAC PRZEGRANA//
+                        gracz1->przegrana();
                         continue;
                     }
                     gracz1->sprawdzCzyBicie(board);
@@ -338,8 +352,7 @@ int main()
                     bicia2 = gracz2->pokazbicia();
                     if (bicia2 == 5)
                     {
-                        gracz2->wygrana();
-                        //DODAC PRZEGRANA//
+                        gracz1->przegrana();
                         continue;
                     }
                     system("cls");
