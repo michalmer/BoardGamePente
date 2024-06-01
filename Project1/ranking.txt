@@ -1,3 +1,7 @@
-gracz1:7
-gracz3:3
+merycha:3
+ewa:1
 gracz2:1
+twojastaratokopara:1
+gracz1:1
+dinner32:1
+Dinner32:1

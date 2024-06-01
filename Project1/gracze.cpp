@@ -237,7 +237,7 @@ bool blokuj_przeciwnika(char plansza[19][19], char znak)
             //POZIOMO
             if (j <= rozmiar - 5 && sprawdz_ciag(plansza, i, j, 0, 1, znak)) 
             {
-                if (ustaw_znak(plansza, i, j - 1, znak) || ustaw_znak(plansza, i, j + 4, znak))
+                if (ustaw_znak(plansza, i, j - 1, znak) || ustaw_znak(plansza, i, j + 3, znak))
                 {
                     return true;
                 }
@@ -245,12 +245,15 @@ bool blokuj_przeciwnika(char plansza[19][19], char znak)
             //PIONOWO
             if (i <= rozmiar - 5 && sprawdz_ciag(plansza, i, j, 1, 0,znak)) 
             {
-                if (ustaw_znak(plansza, i - 1, j, znak) || ustaw_znak(plansza, i + 4, j, znak)) return true;
+                if (ustaw_znak(plansza, i - 1, j, znak) || ustaw_znak(plansza, i + 3, j, znak))
+                {
+                    return true;
+                }
             }
             //UKOS DOL
             if (i <= rozmiar - 5 && j <= rozmiar - 5 && sprawdz_ciag(plansza, i, j, 1, 1, znak)) 
             {
-                if (ustaw_znak(plansza, i - 1, j - 1, znak) || ustaw_znak(plansza, i + 4, j + 4, znak))
+                if (ustaw_znak(plansza, i - 1, j - 1, znak) || ustaw_znak(plansza, i + 3, j + 3, znak))
                 {
                     return true;
                 }
@@ -258,7 +261,7 @@ bool blokuj_przeciwnika(char plansza[19][19], char znak)
             //UKOS GORA
             if (i >= 4 && j <= rozmiar - 5 && sprawdz_ciag(plansza, i, j, -1, 1, znak)) 
             {
-                if (ustaw_znak(plansza, i + 1, j - 1, znak) || ustaw_znak(plansza, i - 4, j + 4, znak))
+                if (ustaw_znak(plansza, i + 1, j - 1, znak) || ustaw_znak(plansza, i - 3, j + 3, znak))
                 {
                     return true;
                 }
@@ -270,7 +273,7 @@ bool blokuj_przeciwnika(char plansza[19][19], char znak)
 //Funkcja sprawdza czy istnieje 5 elementowy ciag znakow w zadanym kierunku na planszy
 bool sprawdz_ciag(char plansza[19][19], int x, int y, int dx, int dy, char znak) 
 {
-    for (int k = 0; k < 4; ++k) {
+    for (int k = 0; k < 3; ++k) {
         if (plansza[x + k * dx][y + k * dy] == ' ' || plansza[x + k * dx][y + k * dy] == znak)
         {
             return false;
