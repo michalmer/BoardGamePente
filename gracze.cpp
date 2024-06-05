@@ -6,18 +6,22 @@
 #include <string>
 
 using namespace std;
+//metoda do dodawania bicia
 void gracz::dodajbicie() 
 {
     ile_bic++;
 }
+//metoda do zwracania ilosci bic
 int gracz::pokazbicia()
 {
     return ile_bic;
 }
+//metoda do ustawiania ilosci bic
 void gracz :: ustawbicia(int bicia)
 {
     ile_bic = bicia;
 }
+//konstruktor domyslny dla gracz
 gracz::gracz() : ilosc_wygranych(0), ile_bic(0), stan_wygranej(0),nick("default"),znak('X') {}
 
 //Metoda wypisuje na ekranie napis WYGRALES korzystajac ze znakow ASCII
@@ -38,6 +42,8 @@ void gracz::wygrana()
 //Metoda wypisuje na ekranie napis PRZEGRALES korzystajac ze znakow ASCII
 void gracz::przegrana()
 {
+    ilosc_wygranych++;
+    stan_wygranej = 1;
     std::cout << "  _____                              _           \n";
     std::cout << " |  __ \\                            | |          \n";
     std::cout << " | |__) | __ _______  __ _ _ __ __ _| | ___  ___ \n";
@@ -49,10 +55,12 @@ void gracz::przegrana()
 
 
 }
+//metoda ustawia znak gracza
 void gracz::ustawznak(char z)
 {
     znak = z;
 }
+//metoda ustawia nick gracza
 void gracz::ustawnick(const char* nazwa)
 {
     strncpy(nick, nazwa, 19);
@@ -167,63 +175,80 @@ int gracz::sprawdzczywygrana(char board[19][19])
         }
     }
 }
-//SPRAWDZIC CZY POTRZEBNA
-//void gracz::zapiszwynik()
-//{
-//    FILE* A = fopen("ranking.txt", "r+");
-//    fprintf(A, "Nick gracza: %s, Wygrane rundy: %d", nick, ilosc_wygranych);
-//    fclose(A);
-//}
+//metoda dodaje wygrana 
 void gracz::dodajwygrana()
 {
     ilosc_wygranych++;
 }
+//metoda zwraca ilosc wygranych
 int gracz:: pokazwygrana()
 {
     return ilosc_wygranych;
 }
+//metoda ustawia ilosc wygranych
 void gracz::ustawwygrane(int wygrane)
 {
     ilosc_wygranych = wygrane;
 }
+//funkcja czysci bufor
+void WyczyscBufor() 
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+//funkcja sprawdza czy wiersz jest poprawny
+int czyPoprawnyWiersz(int wiersz) 
+{
+    return wiersz >= 1 && wiersz <= 19;
+}
+// Funkcja sprawdzaj¹ca poprawnoœæ kolumny
+int czyPoprawnaKolumna(char kolumna) 
+{
+    return kolumna >= 'A' && kolumna <= 'S';
+}
 //Metoda stawia znak klasy gracz na danym polu planszy, jesli to pole jest puste i istnieje
 void real::wykonajRuch(char board[19][19])
 {
+    char input[100];
     int wiersz;
     char kolumna;
-    printf("Podaj wiersz i kolumne: ");
-    scanf("%d", &wiersz);
-    scanf(" %c", &kolumna);
-    if (wiersz < 0 || (kolumna < 'A' || kolumna > 'S'))
+    int c;
+   /* if (input[strlen(input) - 1] != '\n')
     {
-        
-        do{
-            while (getchar() != '\n') {
-                continue;
-            }
-            printf("Ta pozycja nie istnieje! Podaj nowa pozycje!");
-            printf("Podaj wiersz i kolumne: ");
-            scanf("%d", &wiersz);
-            scanf(" %c", &kolumna);
-        } while (wiersz < 0 || (kolumna < 'A' || kolumna > 'S'));
-    }
-    if (board[wiersz - 1][zmianakolumna(kolumna)] != ' ')
+        WyczyscBufor();
+    }*/
+    while (1)
     {
-        while (board[wiersz - 1][zmianakolumna(kolumna)] != ' ')
+        printf("Podaj wiersz i kolumne: ");
+        if (fgets(input, sizeof(input), stdin) == NULL) {
+            WyczyscBufor();
+            continue;
+        }
+
+        // Usuniêcie nowej linii z koñca wejœcia, jeœli istnieje
+        char* nowalinia = strchr(input, '\n');
+        if (nowalinia) {
+            *nowalinia = '\0';
+        }
+        else 
         {
-            printf("Ta pozycja jest zajeta! Podaj nowa pozycje!");
-            printf("Podaj wiersz i kolumne: ");
-            scanf("%d", &wiersz);
-            scanf(" %c", &kolumna);
+            WyczyscBufor();
+        }
+
+        if (sscanf(input, "%d%c", &wiersz, &kolumna) != 2 || !czyPoprawnyWiersz(wiersz) || !czyPoprawnaKolumna(kolumna)) {
+            printf("Pole niepoprawne: %s\n", input);
+            continue;
+        }
+        if ((board[wiersz - 1][zmianakolumna(kolumna)] != ' '))
+        {
+            printf("Ta pozycja jest zajeta!");
+            continue;
         }
         board[wiersz - 1][zmianakolumna(kolumna)] = znak;
-    }
-    else
-    {
-        board[wiersz - 1][zmianakolumna(kolumna)] = znak;
-
+        break;
     }
 }
+//konstruktor domyslny tworzacy obiekt real
 real :: real() : gracz() {}
 //Funkcja sprawdza czy da sie zablokowac przeciwnika poprzez zablokowanie mu mozliwosci postawienia piatego pionka(natychmiastowa wygrana)
 bool blokuj_przeciwnika(char plansza[19][19], char znak) 
@@ -306,20 +331,73 @@ void losowy_ruch(char plansza[19][19], int& x, int& y, char znak)
 void komputerHARD :: wykonajRuch(char plansza[19][19]) 
 {
     const int rozmiar = 19;
-
+    int k,l;
     if (blokuj_przeciwnika(plansza,znak)) 
     {
         return;
     }
+    else
+    {
+        for (int i = 0; i < 19; i++)
+        {
+            for (int j = 0; j < 19; j++)
+            {
+                k = i;
+                l = j;
+                if (plansza[i][j] == znak)
+                {
 
+                    while (plansza[k + 1][j] != ' ' && k < 19)
+                    {
+                        k++;
+                    }
+                    if (k < 19)
+                    {
+                        if ((plansza[k][j] != ' ' && plansza[k][j] != znak) && (plansza[k + 3][j] != ' ' && plansza[k + 3][j] != znak))
+                        {
+                            int x, y;
+                            losowy_ruch(plansza, x, y, znak);
+                            plansza[x][y] = znak;
+                            return;
+                        }
+                        if (k + 1 < 19)
+                        {
+                            plansza[k + 1][j] = znak;
+                            return;
+                        }
+                    }
+                    while (plansza[i][l + 1] != ' ' && l < 19)
+                    {
+                        l++;
+                    }
+                    if (l < 19)
+                    {
+                        if ((plansza[i][l] != ' ' && plansza[i][l] != znak) && (plansza[i][l + 3] != ' ' && plansza[i][l + 3] != znak))
+                        {
+                            int x, y;
+                            losowy_ruch(plansza, x, y, znak);
+                            plansza[x][y] = znak;
+                            return;
+                        }
+                        if (l + 1 < 19)
+                        {
+                            plansza[i][l + 1] = znak;
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
     int x, y;
     losowy_ruch(plansza, x, y,znak);
     plansza[x][y] = znak;
 }
 
-
+//konstruktor domyslny tworzacy obiekt komputerHARD
 komputerHARD :: komputerHARD() : gracz() {}
-
+//konstruktor domyslny tworzacy obiekt komputerEASY
 komputerEASY :: komputerEASY() : gracz() {}
 
 //Metoda umieszcza na polu planszy znak klasy gracza,wariant wykorzystujacy wylacznie liczby pseudolosowe

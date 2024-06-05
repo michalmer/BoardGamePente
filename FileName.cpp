@@ -12,15 +12,20 @@
 #include <stdlib.h>
 
 using namespace std;
+//ustawia pozycje kursora 
 void setCursorPosition(int x, int y) {
     HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD position = { x, y };
     SetConsoleCursorPosition(hStdout, position);
 }
+//wyswietla wyniki z rankingu
 void wyswietlwyniki()
 {
     char line[256];
     FILE* B = fopen("ranking.txt", "r");
+    if (B == NULL) {
+        perror("Blad otwarcia pliku");
+    }
     while (fgets(line, sizeof(line), B))
     {
         printf("%s", line);
@@ -104,9 +109,9 @@ int main()
             gracz2->ustawbicia(0);
             bicia1 = 0;
             bicia2 = 0;
-            cout << "                                       |---------------------------------------------------|" << endl;
-            printf("                                       |Podaj nick Gracza 1(max 19 znakow)                 |\n");
-            cout << "                                       |---------------------------------------------------|" << endl << endl;
+            cout << "                                   |----------------------------------------------------------|" << endl;
+            printf("                                   |Podaj nick Gracza 1,ktory zaczyna rozgrywke(max 19 znakow)|\n");
+            cout << "                                   |----------------------------------------------------------|" << endl << endl;
 
             cout << "                                                               ......." << endl;
             indeks += 5;
@@ -136,36 +141,14 @@ int main()
             setCursorPosition(66, indeks);
             scanf(" %c", &znak2);
             while ((ch = getchar()) != '\n' && ch != EOF);
-            cout << "                                       |---------------------------------------------------|" << endl;
-            printf("                                       |Podaj ktory gracz ma zaczynac pierwszy: (1), (2)   |\n");
-            cout << "                                       |---------------------------------------------------|" << endl << endl;
-            cout << "                                                               ......." << endl;
-            indeks += 5;
-            setCursorPosition(66, indeks);
-            do {
-                valid = scanf("%d", &ktory);
-                while ((ch = getchar()) != '\n');
-                if (valid != 1 || (ktory != 1 && ktory != 2)) {
-                    printf("Zly numer gracza! Podaj jeszcze raz (1 lub 2)\n");
-                }
-            } while (valid != 1 || (ktory != 1 && ktory != 2));
-            if (ktory == 1)
-            {
-                gracz1->ustawnick(nick1);
-                gracz1->ustawznak(znak1);
-                gracz2->ustawnick(nick2);
-                gracz2->ustawznak(znak2);
-            }
-            else if (ktory == 2)
-            {
-                gracz1->ustawnick(nick2);
-                gracz1->ustawznak(znak2);
-                gracz2->ustawnick(nick1);
-                gracz2->ustawznak(znak1);
-            }
-            cout << "                              |-------------------------------------------------------------------------|" << endl;
-            printf("                              |Jesli chcesz rozpoczac gre wpisz (T) jesli chcesz zakonczyc gre wpisz(K) |\n");
-            cout << "                              |-------------------------------------------------------------------------|" << endl << endl;
+         
+            gracz1->ustawnick(nick1);
+            gracz1->ustawznak(znak1);
+            gracz2->ustawnick(nick2);
+            gracz2->ustawznak(znak2);
+            cout << "                        |--------------------------------------------------------------------------------|" << endl;
+            printf("                        |Jesli chcesz rozpoczac gre wpisz (T) jesli chcesz zakonczyc gre wpisz inny znak |\n");
+            cout << "                        |--------------------------------------------------------------------------------|" << endl << endl;
             cout << "                                                               ......." << endl;
             indeks += 5;
             setCursorPosition(66, indeks);
@@ -383,13 +366,14 @@ int main()
                 gracz2->ustawnick(nick1);
                 gracz2->ustawznak(znak1);
             }
-            cout << "                              |-------------------------------------------------------------------------|" << endl;
-            printf("                              |Jesli chcesz rozpoczac gre wpisz (T) jesli chcesz zakonczyc gre wpisz(K) |\n");
-            cout << "                              |-------------------------------------------------------------------------|" << endl << endl;
+            cout << "                        |--------------------------------------------------------------------------------|" << endl;
+            printf("                        |Jesli chcesz rozpoczac gre wpisz (T) jesli chcesz zakonczyc gre wpisz inny znak |\n");
+            cout << "                        |--------------------------------------------------------------------------------|" << endl << endl;
             cout << "                                                               ......." << endl;
             indeks += 5;
             setCursorPosition(66, indeks);
             scanf(" %c", &wybor2);
+            while ((ch = getchar()) != '\n' && ch != EOF);
             system("cls");
             if (wybor2 == 'T')
             {
@@ -414,22 +398,36 @@ int main()
                     gracz1->wykonajRuch(board);
                     if (gracz1->sprawdzczywygrana(board) == 1)
                     {
-                        gracz1->wygrana();
-                        update_score(players, num_players, nick1);
-                        save_scoreboard(players, num_players);
-                        wyswietlwyniki();
+                        if (ktory == 1)
+                        {
+                            gracz1->wygrana();
+                            continue;
+                        }
+                        gracz1->przegrana();
                         continue;
                     }
                     gracz1->sprawdzCzyBicie(board);
                     gracz2->sprawdzCzyBicie(board);
                     bicia1 = gracz1->pokazbicia();
+                    bicia2 = gracz2->pokazbicia();
                     if (bicia1 == 5)
                     {
+                        if (ktory == 1)
+                        {
+                            gracz1->wygrana();
+                            continue;
+                        }
                         gracz1->wygrana();
-                        update_score(players, num_players, nick1);
-                        save_scoreboard(players, num_players);
-                        wyswietlwyniki();
-
+                        continue;
+                    }
+                    if (bicia2 == 5)
+                    {
+                        if (ktory == 1)
+                        {
+                            gracz1->przegrana();
+                            continue;
+                        }
+                        gracz1->wygrana();
                         continue;
                     }
                     system("cls");
@@ -437,13 +435,13 @@ int main()
                     printf("\n%s: ", gracz1->nick);
                     for (int i = 0; i < bicia1; i++)
                     {
-                        printf("%c", 219);
+                        printf("%c ", 219);
                     }
                     printf("      ");
                     printf("%s: ", gracz2->nick);
                     for (int i = 0; i < bicia2; i++)
                     {
-                        printf("%c", 219);
+                        printf("%c ", 219);
                     }
                     printf("\n");
                     printf("RUCH GRACZA: %s\n", gracz2->nick);
@@ -451,15 +449,36 @@ int main()
                     gracz2->wykonajRuch(board);
                     if (gracz2->sprawdzczywygrana(board) == 1)
                     {
-                        gracz1->przegrana();
+                        if (ktory == 2)
+                        {
+                            gracz2->wygrana();
+                            continue;
+                        }
+                        gracz2->przegrana();
                         continue;
                     }
                     gracz1->sprawdzCzyBicie(board);
                     gracz2->sprawdzCzyBicie(board);
+                    bicia1 = gracz1->pokazbicia();
                     bicia2 = gracz2->pokazbicia();
+                    if (bicia1 == 5)
+                    {
+                        if (ktory == 1)
+                        {
+                            gracz1->wygrana();
+                            continue;
+                        }
+                        gracz1->wygrana();
+                        continue;
+                    }
                     if (bicia2 == 5)
                     {
-                        gracz1->przegrana();
+                        if (ktory == 1)
+                        {
+                            gracz1->przegrana();
+                            continue;
+                        }
+                        gracz1->wygrana();
                         continue;
                     }
                     system("cls");
@@ -470,7 +489,7 @@ int main()
 
             }
         }
-        printf("Chcesz zagrac jeszcze raz (T) czy chcesz zakonczyc gre? (K)");
+        printf("Chcesz zagrac jeszcze raz (T) czy chcesz zakonczyc gre? (inny znak z klawiatury)");
         scanf(" %c", &wybor3);
     }while (wybor3 == 'T');
     return 0;

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 using namespace std;
 
-// Funkcja do rysowania planszy w konsoli
+ //Funkcja do rysowania planszy w konsoli
 void drawBoard(char board[19][19]) 
 {
     HANDLE hOut;

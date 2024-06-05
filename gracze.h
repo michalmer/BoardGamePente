@@ -1,6 +1,6 @@
 #ifndef gracze_hpp
 #define gracze_hpp
-
+//klasa bazowa reprezntujaca graczy
 class gracz 
 {
     int ilosc_wygranych;
@@ -27,14 +27,14 @@ public:
     void ustawwygrane(int wygrane);
     void ustawbicia(int bicia);
 };
-
+//klasa pochodna reprezentujaca realnego gracza
 class real : public gracz 
 {
 public:
     real();
     void wykonajRuch(char board[19][19]);
 };
-
+//klasa pochodna reprezentujaca gracza-komputer o poziomie Hard
 class komputerHARD : public gracz 
 {
 public:
@@ -46,7 +46,7 @@ bool sprawdz_ciag(char plansza[19][19], int x, int y, int dx, int dy, char znak)
 bool ustaw_znak(char plansza[19][19], int x, int y, char znak);
 void losowy_ruch(char plansza[19][19], int& x, int& y, char znak);
 
-
+//klasa pochodna reprezentujaca gracza-komputer o poziomie Easy
 class komputerEASY : public gracz
 {
 public:
