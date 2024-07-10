@@ -52,6 +52,6 @@ class komputerEASY : public gracz
 public:
     komputerEASY();
     void wykonajRuch(char board[19][19]);
+ 
 };
-
 #endif

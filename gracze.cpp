@@ -295,6 +295,7 @@ bool blokuj_przeciwnika(char plansza[19][19], char znak)
     }
     return false;
 }
+
 //Funkcja sprawdza czy istnieje 5 elementowy ciag znakow w zadanym kierunku na planszy
 bool sprawdz_ciag(char plansza[19][19], int x, int y, int dx, int dy, char znak) 
 {
